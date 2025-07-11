@@ -1,1 +1,37 @@
-__pychache__/
+# ▶️ Python Bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ▶️ Virtual Environment folders
+venv/
+env/
+.venv/
+.env/
+
+# ▶️ Flask SQLite DB or config cache (if used)
+*.sqlite3
+instance/
+*.db
+
+# ▶️ Logs
+*.log
+
+# ▶️ PyCharm project files
+.idea/
+*.iml
+
+# ▶️ VS Code settings
+.vscode/
+
+# ▶️ System files
+.DS_Store
+Thumbs.db
+
+# ▶️ Testing/coverage
+htmlcov/
+.tox/
+.pytest_cache/
+.coverage
+.cache/
