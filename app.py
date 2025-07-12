@@ -21,9 +21,18 @@ def faq():
 
 @app.route('/contacts', methods=["POST", "GET"])
 def contacts():
+    message_sent = False
+
     if request.method == 'POST':
-        print(request.form)
-    return render_template('contacts.html', title='Contacts')
+        username = request.form.get('username')
+        email = request.form.get('email')
+        message = request.form.get('message')
+
+        print(f"Name: {username}, Email: {email}, Message: {message}")
+
+        message_sent = True
+
+    return render_template('contacts.html', title='Contacts', message_sent=message_sent, menu=menu)
 
 
 @app.route('/profile/<path:username>')
