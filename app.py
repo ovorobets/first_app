@@ -1,8 +1,9 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, flash,redirect
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'hdvsdvhsd9v89fhv2dfds2'
 
-menu = ['Home', 'About', 'FAQ', 'Contacts']
+menu = ['Home', 'About', 'FAQ', 'Contact us']
 
 @app.route('/')
 def index():
@@ -21,23 +22,43 @@ def faq():
 
 @app.route('/contacts', methods=["POST", "GET"])
 def contacts():
-    message_sent = False
-
     if request.method == 'POST':
-        username = request.form.get('username')
-        email = request.form.get('email')
-        message = request.form.get('message')
+        username = request.form.get('username').strip()
+        email = request.form.get('email').strip()
+        message = request.form.get('message').strip()
+
+        error = False
+
+        if not username or len(username) < 2:
+            flash('Name should contain at least 2 letters', 'error')
+            error = True
+
+        if '@' not in email or '.' not in email.split('@')[-1]:
+            flash('Enter a valid email address', 'error')
+            error = True
+
+        if not message or len(message) < 10:
+            flash('Message should have at least 10 symbols', 'error')
+            error = True
+
+        if error:
+            return render_template('contacts.html', title='Contact us', menu=menu,
+                                   username=username, email=email, message=message)
 
         print(f"Name: {username}, Email: {email}, Message: {message}")
+        flash('Message sent!', 'success')
+        return redirect(url_for('contacts'))
 
-        message_sent = True
-
-    return render_template('contacts.html', title='Contacts', message_sent=message_sent, menu=menu)
+    return render_template('contacts.html', title='Contact us', menu=menu)
 
 
 @app.route('/profile/<path:username>')
 def profile(username):
     return f"User: {username}"
+
+@app.errorhandler(404)
+def pageNotFound(error):
+    return render_template('page404.html', title="Page not found", menu=menu)
 
 if __name__ == '__main__':
     app.run(debug=True)

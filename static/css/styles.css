@@ -100,3 +100,52 @@ nav.primary-navigation ul li ul.dropdown li a:hover {
 .contact-form input[type="submit"]:hover {
     background-color: #3189c7;
 }
+
+/* 💬 Flash messages */
+
+.flash-messages {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 0;
+    list-style: none;
+}
+
+.flash-messages li {
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    border: 1px solid transparent;
+}
+
+.flash-messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.flash-messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+
+.error-404 {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 30px;
+    text-align: center;
+    background: white;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+}
+
+.error-404 h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #e63946;
+}
+
+.error-404 p {
+    font-size: 18px;
+}

@@ -5,15 +5,25 @@
 {% endblock %}
 
 {% block content %}
-    <h1 xmlns="http://www.w3.org/1999/html">Our contacts</h1>
-    <form action={{ url_for ("contacts")}} method="post" class="contact-form">
-    <p><label>Name: </label> <input type="text" name="username" value=""required/>
-    <p><label>Email: </label> <input type="text" name="email" value=""required/>
-    <p><label>Message: </label>
-        <textarea name="message" rows="7" placeholder="Write your message here..."></textarea>
-        <input type="submit" value="Send">
-        </form>
-        {% if message_sent %}
-            <p><strong style="color: green;">Message sent successfully!</strong></p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flash-messages">
+                {% for category, msg in messages %}
+                    <li class="{{ category }}">{{ msg }}</li>
+                {% endfor %}
+            </ul>
         {% endif %}
+    {% endwith %}
+    <h1 xmlns="http://www.w3.org/1999/html">Contact us</h1>
+    <form action={{ url_for ("contacts")}} method="post" class="contact-form">
+        <p><label>Name: </label> <input type="text" name="username" value=""required/>
+        <p><label>Email: </label> <input type="text" name="email" value=""required/>
+        <p><label>Message: </label>
+            <textarea name="message" rows="7" placeholder="Write your message here..."></textarea>
+            <input type="submit" value="Send">
+    </form>
+    {% if message_sent %}
+        <p><strong style="color: green;">Message sent successfully!</strong></p>
+    {% endif %}
 {% endblock %}
