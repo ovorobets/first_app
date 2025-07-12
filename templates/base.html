@@ -13,9 +13,17 @@
         <li><a href="{{ url_for('index') }}">Home</a></li>
         <li><a href="{{ url_for('about') }}">About</a></li>
         <li><a href="{{ url_for('faq') }}">FAQ</a></li>
-        <li><a href="{{ url_for('contacts') }}">Contact us</a></li>
+        <li><a href="{{ url_for('contacts') }}">Contacts</a></li>
+
+        {% if 'username' in session %}
+            <li><a href="{{ url_for('profile') }}">Profile ({{ session['username'] }})</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+        {% endif %}
     </ul>
 </nav>
+
 
 <hr>
 

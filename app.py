@@ -1,9 +1,14 @@
-from flask import Flask, render_template, url_for, request, flash,redirect
+from flask import Flask, render_template, url_for, request, flash, redirect, session
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hdvsdvhsd9v89fhv2dfds2'
 
 menu = ['Home', 'About', 'FAQ', 'Contact us']
+
+users = {
+    'admin': '1234',
+    'testuser': 'pass'
+}
 
 @app.route('/')
 def index():
@@ -23,9 +28,9 @@ def faq():
 @app.route('/contacts', methods=["POST", "GET"])
 def contacts():
     if request.method == 'POST':
-        username = request.form.get('username').strip()
-        email = request.form.get('email').strip()
-        message = request.form.get('message').strip()
+        username = request.form.get('username', '').strip()
+        email = request.form.get('email', '').strip()
+        message = request.form.get('message', '').strip()
 
         error = False
 
@@ -51,10 +56,40 @@ def contacts():
 
     return render_template('contacts.html', title='Contact us', menu=menu)
 
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if 'username' in session:
+        flash('You have already logged in', 'info')
+        return redirect(url_for('profile'))
 
-@app.route('/profile/<path:username>')
-def profile(username):
-    return f"User: {username}"
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+
+        if username in users and users[username] == password:
+            session['username'] = username
+            flash('You have successfully logged in!', 'success')
+            return redirect(url_for('profile'))
+        else:
+            flash('Wrong username or password', 'error')
+
+    return render_template('login.html', title='Login', menu=menu)
+
+@app.route('/profile')
+def profile():
+    if 'username' not in session:
+        flash('Please log in', 'error')
+        return redirect(url_for('login'))
+
+    return render_template('profile.html', title='Profile', menu=menu, username=session[
+        'username'])
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    flash('You are logged out', 'info')
+    return redirect(url_for('login'))
+
 
 @app.errorhandler(404)
 def pageNotFound(error):
